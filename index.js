@@ -4,7 +4,7 @@ const prompt = require("prompt-sync");
 const cakeRecipes = require("./cake-recipes.json");
 
 // Your functions here
-
+console.log("hello world");
 // Part 2
 
 const displayMenu = () => {
