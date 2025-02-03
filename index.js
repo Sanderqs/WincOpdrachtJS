@@ -2,14 +2,36 @@
 
 const prompt = require("prompt-sync");
 const cakeRecipes = require("./cake-recipes.json");
+const test = require("./test.json");
 
 // Your functions here
-console.log("hello world");
+
+const showUniqueAuthors = (arr) => {
+  const result = new Set();
+
+  arr.forEach((element) => {
+    if (!result.has(element.Author)) {
+      result.add(element.Author);
+    }
+  });
+  return result;
+};
+
+const showEachRecipeName = (arr) => {
+  if (arr.length === 0) {
+    console.log("helaas Pindakaas");
+  }
+  arr.forEach(({ Name }) => {
+    console.log(Name);
+  });
+};
+showEachRecipeName(cakeRecipes);
 // Part 2
 
 const displayMenu = () => {
   console.log("\nRecipe Management System Menu:");
   console.log("1. Show All Authors");
+  console.log(showUniqueAuthors(cakeRecipes));
   console.log("2. Show Recipe names by Author");
   console.log("3. Show Recipe names by Ingredient");
   console.log("4. Get Recipe by Name");
