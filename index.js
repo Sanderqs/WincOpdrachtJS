@@ -39,9 +39,29 @@ showEachRecipeName(recipesByAuthor);
 
 //Get recipe by ingredient (gebruik filter() en .some())
 const getRecipeByIngredient = (arr, ingredient) => {
-  return arr.filter((recipe) => recipe.Ingredients === ingredient);
+  return arr.filter((recipe) =>
+    recipe.Ingredients.some((item) =>
+      item.toLowerCase().includes(ingredient.toLowerCase())
+    )
+  );
 };
-console.log(getRecipeByIngredient(cakeRecipes, "140g caster sugar"));
+//Display recipeList by Ingredient
+const recipeByIngredient = getRecipeByIngredient(
+  cakeRecipes,
+  "200g plain flour"
+);
+showEachRecipeName(recipeByIngredient);
+
+//Find recipe by Name (use .find() and .includes())
+const getRecipesByName = (arr, recipeName) => {
+  return arr.find((recipe) => recipe.Name.includes(recipeName));
+};
+const recipeByName = getRecipesByName(
+  cakeRecipes,
+  "Simmer-&-stir Christmas cake"
+);
+
+const getIngredientsInArray = (arr, recipeName) => {};
 
 // Part 2
 const displayMenu = () => {
@@ -51,7 +71,9 @@ const displayMenu = () => {
   console.log("2. Show Recipe names by Author");
   console.log(showEachRecipeName(recipesByAuthor));
   console.log("3. Show Recipe names by Ingredient");
+  console.log(showEachRecipeName(recipeByIngredient));
   console.log("4. Get Recipe by Name");
+  console.log(recipeByName);
   console.log("5. Get All Ingredients of Saved Recipes");
   console.log("0. Exit");
   const choice = prompt("Enter a number (1-5) or 0 to exit: ");
