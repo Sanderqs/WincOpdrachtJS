@@ -6,33 +6,50 @@ const test = require("./test.json");
 
 // Your functions here
 
+//Unique Authors (gebruik .forEach)
 const showUniqueAuthors = (arr) => {
   const result = new Set();
 
-  arr.forEach((element) => {
-    if (!result.has(element.Author)) {
-      result.add(element.Author);
-    }
+  arr.forEach((recipe) => {
+    result.add(recipe.Author);
   });
-  return result;
+  return [...result];
 };
 
+//Recipe name in array (object destructuring)
 const showEachRecipeName = (arr) => {
-  if (arr.length === 0) {
-    console.log("helaas Pindakaas");
-  }
-  arr.forEach(({ Name }) => {
-    console.log(Name);
-  });
-};
-showEachRecipeName(cakeRecipes);
-// Part 2
+  const recipeNames = [];
 
+  arr.length === 0
+    ? console.log("Helaas Pindakaas geen data")
+    : arr.forEach(({ Name }) => {
+        recipeNames.push(Name);
+      });
+  return recipeNames;
+};
+
+//Get recipe by Author (gebruik .filter)
+const getRecipesByAuthor = (arr, author) => {
+  return arr.filter((recipe) => recipe.Author === author);
+};
+
+//Display recipelist by Author
+const recipesByAuthor = getRecipesByAuthor(cakeRecipes, "Good Food");
+showEachRecipeName(recipesByAuthor);
+
+//Get recipe by ingredient (gebruik filter() en .some())
+const getRecipeByIngredient = (arr, ingredient) => {
+  return arr.filter((recipe) => recipe.Ingredients === ingredient);
+};
+console.log(getRecipeByIngredient(cakeRecipes, "140g caster sugar"));
+
+// Part 2
 const displayMenu = () => {
   console.log("\nRecipe Management System Menu:");
   console.log("1. Show All Authors");
   console.log(showUniqueAuthors(cakeRecipes));
   console.log("2. Show Recipe names by Author");
+  console.log(showEachRecipeName(recipesByAuthor));
   console.log("3. Show Recipe names by Ingredient");
   console.log("4. Get Recipe by Name");
   console.log("5. Get All Ingredients of Saved Recipes");
