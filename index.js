@@ -1,12 +1,15 @@
 "use strict";
 
-const prompt = require("prompt-sync");
+const prompt = require("prompt-sync")();
 const cakeRecipes = require("./cake-recipes.json");
 const test = require("./test.json");
 
 // Your functions here
 
-//Unique Authors (gebruik .forEach)
+//Global Variable
+const SAVED_RECIPES = [];
+
+//Function to Get Unique Authors (.forEach)
 const showUniqueAuthors = (arr) => {
   const result = new Set();
 
@@ -16,7 +19,7 @@ const showUniqueAuthors = (arr) => {
   return [...result];
 };
 
-//Recipe name in array (object destructuring)
+//Function to Log Recipe Names (object destructuring)
 const showEachRecipeName = (arr) => {
   const recipeNames = [];
 
@@ -28,16 +31,12 @@ const showEachRecipeName = (arr) => {
   return recipeNames;
 };
 
-//Get recipe by Author (gebruik .filter)
+//Function to Get Recipes by Author (.filter)
 const getRecipesByAuthor = (arr, author) => {
   return arr.filter((recipe) => recipe.Author === author);
 };
 
-//Display recipelist by Author
-const recipesByAuthor = getRecipesByAuthor(cakeRecipes, "Good Food");
-showEachRecipeName(recipesByAuthor);
-
-//Get recipe by ingredient (gebruik filter() en .some())
+//Function to Get Recipes by Ingredient(gebruik filter() en .some())
 const getRecipeByIngredient = (arr, ingredient) => {
   return arr.filter((recipe) =>
     recipe.Ingredients.some((item) =>
@@ -45,35 +44,24 @@ const getRecipeByIngredient = (arr, ingredient) => {
     )
   );
 };
-//Display recipeList by Ingredient
-const recipeByIngredient = getRecipeByIngredient(
-  cakeRecipes,
-  "200g plain flour"
-);
-showEachRecipeName(recipeByIngredient);
 
-//Find recipe by Name (use .find() and .includes())
+//Function to Get Recipe by Name ( .find() & .includes())
 const getRecipesByName = (arr, recipeName) => {
   return arr.find((recipe) => recipe.Name.includes(recipeName));
 };
-const recipeByName = getRecipesByName(
-  cakeRecipes,
-  "Simmer-&-stir Christmas cake"
-);
 
-const getIngredientsInArray = (arr, recipeName) => {};
-
+const getIngredientsInArray = (recipes) => {
+  return recipes.reduce((acc, recipe) => {
+    return [...acc, ...recipe.Ingredients];
+  }, []);
+};
 // Part 2
 const displayMenu = () => {
   console.log("\nRecipe Management System Menu:");
   console.log("1. Show All Authors");
-  console.log(showUniqueAuthors(cakeRecipes));
   console.log("2. Show Recipe names by Author");
-  console.log(showEachRecipeName(recipesByAuthor));
   console.log("3. Show Recipe names by Ingredient");
-  console.log(showEachRecipeName(recipeByIngredient));
   console.log("4. Get Recipe by Name");
-  console.log(recipeByName);
   console.log("5. Get All Ingredients of Saved Recipes");
   console.log("0. Exit");
   const choice = prompt("Enter a number (1-5) or 0 to exit: ");
@@ -87,14 +75,35 @@ do {
 
   switch (choice) {
     case 1:
+      console.log(showUniqueAuthors(cakeRecipes));
       break;
     case 2:
+      const author = prompt(
+        "From which author do you want to see cupcake recipes? "
+      );
+      const recipesByAuthor = getRecipesByAuthor(cakeRecipes, author);
+      console.log(showEachRecipeName(recipesByAuthor));
       break;
     case 3:
+      const ingredient = prompt("what ingredient would you like to use? ");
+      const recipesByIngredient = getRecipeByIngredient(
+        cakeRecipes,
+        ingredient
+      );
+      console.log(showEachRecipeName(recipesByIngredient));
       break;
     case 4:
+      const recipeName = prompt("What is the name of the recipe? ");
+      const recipeByName = getRecipesByName(cakeRecipes, recipeName);
+      console.log(recipeByName);
+      const anwser = prompt("Would you like to save this recipe? type Y/N");
+      if (anwser.toLowerCase() === "y") {
+        SAVED_RECIPES.push(recipeByName);
+      }
+
       break;
     case 5:
+      console.log(getIngredientsInArray(SAVED_RECIPES));
       break;
     case 0:
       console.log("Exiting...");
